@@ -1,0 +1,6 @@
+﻿[alias]
+	history = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	co = checkout
+	com = commit
+	st = status
+	br = branch
