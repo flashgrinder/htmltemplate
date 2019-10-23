@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 let gulp          = require('gulp'),
-	autoprefixer  = require('gulp-autoprefixer'),
+	postcss       = require('gulp-postcss'),
 	cleanCSS      = require('gulp-clean-css'),
 	browserSync   = require('browser-sync').create(),
 	sourcemaps    = require('gulp-sourcemaps'),
@@ -58,15 +58,13 @@ function pugproc() {
 }
 
 function sassproc() {
+	const autoprefixer = require('autoprefixer');
 	return gulp.src(source.app.sass)
 	.pipe(sourcemaps.init())
 	.pipe(sass().on('error', sass.logError))
 	.pipe(concat('style.min.css'))
 	.pipe(gcmq())
-	.pipe(autoprefixer({
-		browsers: ['> 0.1%'],
-		cascade: false
-	}))
+	.pipe(postcss([autoprefixer()]))
 	.pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest(source.app.css))
 	.pipe(browserSync.reload({ stream: true }));
