@@ -59,7 +59,7 @@ function pugproc() {
 
 function sassproc() {
 	return gulp.src(source.app.sass)
-	// .pipe(sourcemaps.init())
+	.pipe(sourcemaps.init())
 	.pipe(sass().on('error', sass.logError))
 	.pipe(concat('style.min.css'))
 	.pipe(gcmq())
@@ -67,10 +67,7 @@ function sassproc() {
 		browsers: ['> 0.1%'],
 		cascade: false
 	}))
-	// .pipe(cleanCSS({
-	// 	level: 2
-	// }))
-	// .pipe(sourcemaps.write('.'))
+	.pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest(source.app.css))
 	.pipe(browserSync.reload({ stream: true }));
 }
@@ -78,16 +75,9 @@ gulp.task('sassproc', sassproc);
 
 function jsfiles() {
 	return gulp.src(source.app.libs)
-	// .pipe(sourcemaps.init())
+	.pipe(sourcemaps.init())
 	.pipe(concat('scripts.min.js'))
-	// .pipe(babel({
-	// 	presets: ['env']
-	// }))
-	// .on('error', console.error.bind(console))
-	// .pipe(uglify({
-	// 	toplevel: true
-	// }))
-	// .pipe(sourcemaps.write('.'))
+	.pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest(source.app.js))
 	.pipe(browserSync.stream());
 }
@@ -132,13 +122,29 @@ function html() {
 // Собрать все стили.
 function styles() {
 	return gulp.src(source.app.css + '*.+(css|map)')
+	.pipe(cleanCSS({
+		level: 2
+	}))
 	.pipe(gulp.dest(source.build.css));
 }
 // Собрать все скрипты.
 function scripts() {
-	return gulp.src(source.app.js + '*.+(js|map)')
+	return gulp.src(source.app.js + '*.js')
+	.pipe(babel({
+		presets: ['env']
+	}))
+	.on('error', console.error.bind(console))
+	.pipe(uglify({
+		toplevel: true
+	}))
 	.pipe(gulp.dest(source.build.js));
 }
+
+function mapjs() {
+	return gulp.src(source.app.js + '*.map')
+	.pipe(gulp.dest(source.build.js));
+}
+
 // Собрать все шрифты.
 function fonts() {
 	return gulp.src(source.app.fonts)
@@ -187,7 +193,7 @@ function clean() {
 gulp.task('clean', clean);
 
 // Run the build - Запустить сборку
-gulp.task('build', gulp.series(clean, optimg, gulp.parallel(html, styles, scripts, fonts)));
+gulp.task('build', gulp.series(clean, optimg, gulp.parallel(html, styles, scripts, mapjs, fonts)));
 
 gulp.task('dev', gulp.series('build'));
 
