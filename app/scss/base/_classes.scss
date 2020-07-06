@@ -1,0 +1,145 @@
+/* Containers */
+
+.container {
+	@include wrapper();
+}
+
+.container-full {
+	@include wrapper-full();
+}
+
+/* Hide */
+
+.hide {
+    display: none !important;
+}
+
+.hide-xls {
+	@include xls(display, none !important);
+}
+
+.hide-lg {
+	@include lg(display, none !important);
+}
+
+.hide-md {
+	@include md(display, none !important);
+}
+
+.hide-sm {
+	@include sm(display, none !important);
+}
+
+.hide-xs {
+	@include xs(display, none !important);
+}
+
+/* Position */
+
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+/* Background */
+
+.bg {
+    &_blue {
+        background-color: var(--color-blue);
+    }
+    &_white {
+        background-color: var(--color-white);
+    }
+    &_gray {
+        background-color: var(--color-gray);
+    }
+    &_dark-gray {
+        background-color: var(--color-dark-gray);
+	}
+}
+
+/* Title */
+
+.title {
+    font-family: var(--font-gotham);
+    font-style: normal;
+    margin: 0;
+    &_big {
+		@include xls(font-size, 28px);
+		@include sm(font-size, 20px);
+		font-size: 38px;
+    }
+    &_medium {
+        font-size: 24px;
+    }
+    &_blue {
+        color: var(--color-blue);
+    }
+    &_white {
+        color: var(--color-white);
+	}
+	&_w-black {
+		font-weight: 900;
+	}
+	&_w-bold {
+		font-weight: bold;
+	}
+	&_w-medium {
+		font-weight: 500;
+	}
+	&_w-regular {
+		font-weight: normal;
+	}
+	&_uppercase {
+		text-transform: uppercase;
+	}
+}
+
+.title-second {
+    font-family: var(--font-roboto);
+    font-style: normal;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 100%;
+    color: var(--color-blue);
+    margin: 0;
+}
+
+/* Text */
+
+.text {
+    font-family: var(--font-roboto);
+    font-style: normal;
+    margin: 0;
+	&_dark {
+		color: var(--color-dark); 
+	}
+	&_white {
+		color: var(--color-white);
+	} 
+	&_white-gray {
+		color: var(--color-white-gray);
+	}
+	&_s-normal {
+		font-size: 16px;
+	}
+	&_w-light {
+		font-weight: 300;
+	}
+	&_w-regular {
+		font-weight: 400;
+	}
+	&_w-medium {
+		font-weight: 500;
+	}
+	&_w-bold {
+		font-weight: 700;
+	}
+}

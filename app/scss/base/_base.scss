@@ -2,18 +2,10 @@
     box-sizing: border-box;
 }
 
-.page {
-     margin: 0;
+html {
+    scroll-behavior: smooth;
 }
 
-.container {
-	@include wrapper();
-}
-
-.container-full {
-	@include wrapper-full();
-}
-
-.debug {
-	@include debug(rgba(0, 0, 0, 0.3), 1px solid rgb(19, 138, 92));
+img {
+    max-width: 100%;
 }

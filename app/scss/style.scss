@@ -1,10 +1,13 @@
-@import "./base/variables";
+@charset "UTF-8";
 @import "./base/smart-grid";
+/* Fonts */
 @import "./base/font";
+/* Variables */
+@import "./base/variables";
+/* Base */
 @import "./base/base";
+/* Base Classes */
+@import "./base/classes";
 /* Blocks */
-@import "./blocks/header/header";
-
-@import "./blocks/footer/footer";
-/* Themes */
-@import "./themes/dark";
+/* Page */
+@import "./blocks/page/page";
