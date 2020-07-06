@@ -163,7 +163,7 @@ function optimg() {
 		}),
 		imagemin.svgo(),
 		imagemin.optipng({optimizationLevel: 3}),
-		pngquant({quality: '70-80', speed: 5})
+		pngquant({quality: [0.7, 0.8], speed: 5})
 	],{
 		verbose: true
 	}))
