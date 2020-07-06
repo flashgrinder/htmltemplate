@@ -42,13 +42,5 @@
     "last 15 version",
     "maintained node versions",
     "not dead"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/flashgrinder/htmltemplate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/flashgrinder/htmltemplate/issues"
-  },
-  "homepage": "https://github.com/flashgrinder/htmltemplate#readme"
+  ]
 }
