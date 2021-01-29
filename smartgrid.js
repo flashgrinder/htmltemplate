@@ -4,34 +4,24 @@ module.exports = {
 	columns: 12,
 	offset: "30px",
 	container: {
-		maxWidth: "1280px",
+		maxWidth: "1920px",
 		fields: "30px"
 	},
 	breakPoints: {
-        xl: {
-                width: '1200px'
-        },
-        xls: {
-                width: '1024px'
-        },
-        lg: {
-                width: "992px"
-        },
-        md: {
-                width: "768px",
-                offset: "20px",
-                fields: "10px"
-        },
-        sm: {
-                width: "576px",
-                offset: "10px",
-                fields: "5px"
-        },
-        xs: {
-                width: "400px",
-                offset: "10px",
-                fields: "10px"
-        }
+	large: {
+			width: '1919px'
+		},
+		medium: {
+				width: '1279px'
+		},
+		tablet: {
+				width: '1023px'
+		},
+		mobile: {
+				width: "767px",
+				offset: "20px",
+				fields: "10px"
+		}
 	},
 	mobileFirst: false
 };

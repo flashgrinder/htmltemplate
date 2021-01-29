@@ -14,24 +14,20 @@
     display: none !important;
 }
 
-.hide-xls {
-	@include xls(display, none !important);
+.hide-extra-large {
+	@include large(display, none !important);
 }
 
-.hide-lg {
-	@include lg(display, none !important);
+.hide-medium {
+	@include medium(display, none !important);
 }
 
-.hide-md {
-	@include md(display, none !important);
+.hide-tablet {
+	@include tablet(display, none !important);
 }
 
-.hide-sm {
-	@include sm(display, none !important);
-}
-
-.hide-xs {
-	@include xs(display, none !important);
+.hide-mobile {
+	@include mobile(display, none !important);
 }
 
 /* Position */
@@ -68,12 +64,10 @@
 /* Title */
 
 .title {
-    font-family: var(--font-gotham);
+    font-family: var(--font-second);
     font-style: normal;
     margin: 0;
     &_big {
-		@include xls(font-size, 28px);
-		@include sm(font-size, 20px);
 		font-size: 38px;
     }
     &_medium {
@@ -103,7 +97,7 @@
 }
 
 .title-second {
-    font-family: var(--font-roboto);
+    font-family: var(--font-main);
     font-style: normal;
     font-weight: 900;
     font-size: 18px;
@@ -115,7 +109,7 @@
 /* Text */
 
 .text {
-    font-family: var(--font-roboto);
+    font-family: var(--font-main);
     font-style: normal;
     margin: 0;
 	&_dark {

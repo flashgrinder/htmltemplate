@@ -12,22 +12,22 @@ let gulp          = require('gulp'),
 	concat        = require('gulp-concat'),
 	imagemin      = require('gulp-imagemin'),
 	imgRecompress = require('imagemin-jpeg-recompress'),
-    pngquant      = require('imagemin-pngquant'),
-    imgMozjpeg    = require('imagemin-mozjpeg'),
+	pngquant      = require('imagemin-pngquant'),
+	imgMozjpeg    = require('imagemin-mozjpeg'),
 	ftp           = require('gulp-ftp'),
 	gutil         = require('gulp-util'),
 	babel         = require('gulp-babel'),
 	del           = require('del'),
-    pug           = require('gulp-pug'),
-    nunjucks      = require('gulp-nunjucks'),
-    prettify      = require('gulp-html-prettify');
+	pug           = require('gulp-pug'),
+	nunjucks      = require('gulp-nunjucks'),
+	prettify      = require('gulp-html-prettify');
 
 const source = {
 	root: './app',
 	app: {
 		pug:   './app/layout/pages/*.+(jade|pug)',
-        html:  './app/*.html',
-        nunchacks: './app/templates/[^_]**.html',
+		html:  './app/*.html',
+		nunchacks: './app/templates/[^_]**.html',
 		css:   './app/css/',
 		sass:  './app/scss/*.scss',
 		fonts: './app/fonts/**/*.*',
@@ -47,8 +47,8 @@ const source = {
 	},
 	watch: {
 		pug: './app/**/*.+(jade|pug)',
-        html: './app/**/*.html',
-        nunchacks: './app/templates/**/*.html',
+		html: './app/**/*.html',
+		nunchacks: './app/templates/**/*.html',
 		css:  './app/css/**/*.css',
 		sass: './app/scss/**/*.+(sass|scss)',
 		js:   './app/libs/**/*.js',
@@ -64,24 +64,24 @@ function pugproc() {
 
 function nunja () {
 	return gulp.src(source.app.nunchacks)
-    .pipe(nunjucks.compile())
-    .pipe(prettify({
-        indent_size : 4
-    }))
-    .pipe(gulp.dest(source.root))
-    .pipe(browserSync.reload({ stream: true }));
+	.pipe(nunjucks.compile())
+	.pipe(prettify({
+		indent_size : 4
+	}))
+	.pipe(gulp.dest(source.root))
+	.pipe(browserSync.reload({ stream: true }));
 }
 gulp.task('nunja', nunja);
 
 function sassproc() {
 	const autoprefixer = require('autoprefixer');
 	return gulp.src(source.app.sass)
-	// .pipe(sourcemaps.init())
+	.pipe(sourcemaps.init())
 	.pipe(sass().on('error', sass.logError))
 	.pipe(concat('style.min.css'))
 	.pipe(gcmq())
 	.pipe(postcss([autoprefixer({grid: "autoplace"})]))
-	// .pipe(sourcemaps.write('.'))
+	.pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest(source.app.css))
 	.pipe(browserSync.reload({ stream: true }));
 }
@@ -89,9 +89,9 @@ gulp.task('sassproc', sassproc);
 
 function jsfiles() {
 	return gulp.src(source.app.libs)
-	// .pipe(sourcemaps.init())
+	.pipe(sourcemaps.init())
 	.pipe(concat('scripts.min.js'))
-	// .pipe(sourcemaps.write('.'))
+	.pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest(source.app.js))
 	.pipe(browserSync.stream());
 }
@@ -111,8 +111,8 @@ function watch() {
 	gulp.watch(source.watch.sass, sassproc);
 	gulp.watch(source.watch.js, jsfiles);
 	gulp.watch(source.watch.php);
-    gulp.watch(source.watch.pug, pugproc);
-    gulp.watch(source.watch.nunchacks, nunja).on('change', browserSync.reload);
+	gulp.watch(source.watch.pug, pugproc);
+	gulp.watch(source.watch.nunchacks, nunja).on('change', browserSync.reload);
 	gulp.watch(source.watch.html).on('change', browserSync.reload);
 	gulp.watch('./smartgrid.js', grid).on('change', browserSync.reload);
 }
