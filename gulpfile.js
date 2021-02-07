@@ -1,3 +1,4 @@
+'use strict';
 /*jshint esversion: 6 */
 let gulp          = require('gulp'),
 	postcss       = require('gulp-postcss'),
@@ -13,57 +14,59 @@ let gulp          = require('gulp'),
 	imagemin      = require('gulp-imagemin'),
 	imgRecompress = require('imagemin-jpeg-recompress'),
 	pngquant      = require('imagemin-pngquant'),
-	imgMozjpeg    = require('imagemin-mozjpeg'),
 	ftp           = require('gulp-ftp'),
 	gutil         = require('gulp-util'),
 	babel         = require('gulp-babel'),
 	del           = require('del'),
 	pug           = require('gulp-pug'),
 	nunjucks      = require('gulp-nunjucks'),
-	prettify      = require('gulp-html-prettify');
+	prettify      = require('gulp-html-prettify'),
+    browserify    = require('browserify'),
+    babelify      = require('babelify'),
+    vss           = require('vinyl-source-stream'),
+    rename        = require('gulp-rename'),
+    vbuffer       = require('vinyl-buffer');
 
 const source = {
-	root: './app',
-	app: {
-		pug:   './app/layout/pages/*.+(jade|pug)',
-		html:  './app/*.html',
-		nunchacks: './app/templates/[^_]**.html',
-		css:   './app/css/',
-		sass:  './app/scss/*.scss',
-		fonts: './app/fonts/**/*.*',
-		img:   './app/img/**/*.*',
-		js:    './app/js/',
-		libs:  [
-			// './app/libs/jquery-3.3.1.js',
-			'./app/libs/common.js'
-		]
+	root: './src',
+	src: {
+		pug:   './src/layout/pages/*.+(jade|pug)',
+        html:  './src/*.html',
+        nunchucks: './src/templates/[^_]**.html',
+		css:   './src/css/',
+		sass:  './src/scss/*.scss',
+		fonts: './src/fonts/**/*.*',
+		img:   './src/img/**/*.*',
+		js:    './src/js/*.js',
+		libs: './src/libs/scripts.js'
 	},
-	build: {
-		html:  './build',
-		css:   './build/css',
-		fonts: './build/fonts',
-		img:   './build/img',
-		js:    './build/js'
+	dist: {
+		html:  './dist',
+		css:   './dist/css',
+		fonts: './dist/fonts',
+		img:   './dist/img',
+		js:    './dist/js'
 	},
 	watch: {
-		pug: './app/**/*.+(jade|pug)',
-		html: './app/**/*.html',
-		nunchacks: './app/templates/**/*.html',
-		css:  './app/css/**/*.css',
-		sass: './app/scss/**/*.+(sass|scss)',
-		js:   './app/libs/**/*.js',
-		php:  './app/**/*.php'
+		pug: './src/**/*.+(jade|pug)',
+		html: './src/**/*.html',
+		nunchucks: './src/templates/**/*.html',
+		css:  './src/css/**/*.css',
+		sass: './src/scss/**/*.+(sass|scss)',
+		js:   './src/libs/**/*.js',
+		php:  './src/**/*.php'
 	}
 };
 
-function pugproc() {
-	return gulp.src(source.app.pug)
+function pugs() {
+	return gulp.src(source.src.pug)
 	.pipe(pug({pretty: true}))
 	.pipe(gulp.dest(source.root))
 }
+gulp.task('pugs', pugs);
 
-function nunja () {
-	return gulp.src(source.app.nunchacks)
+function nunjucksTmpl () {
+	return gulp.src(source.src.nunchucks)
 	.pipe(nunjucks.compile())
 	.pipe(prettify({
 		indent_size : 4
@@ -71,34 +74,43 @@ function nunja () {
 	.pipe(gulp.dest(source.root))
 	.pipe(browserSync.reload({ stream: true }));
 }
-gulp.task('nunja', nunja);
+gulp.task('nunjucksTmpl', nunjucksTmpl);
 
-function sassproc() {
+function styles() {
 	const autoprefixer = require('autoprefixer');
-	return gulp.src(source.app.sass)
-	.pipe(sourcemaps.init())
+	const prt = require('postcss-responsive-type');
+
+	const plugins = [
+		autoprefixer({grid: "autoplace"}),
+		prt()
+	]
+	
+	return gulp.src(source.src.sass)
 	.pipe(sass().on('error', sass.logError))
 	.pipe(concat('style.min.css'))
 	.pipe(gcmq())
-	.pipe(postcss([autoprefixer({grid: "autoplace"})]))
-	.pipe(sourcemaps.write('.'))
-	.pipe(gulp.dest(source.app.css))
+	.pipe(postcss(plugins))
+	.pipe(gulp.dest(source.src.css))
 	.pipe(browserSync.reload({ stream: true }));
 }
-gulp.task('sassproc', sassproc);
+gulp.task('styles', styles);
 
-function jsfiles() {
-	return gulp.src(source.app.libs)
-	.pipe(sourcemaps.init())
-	.pipe(concat('scripts.min.js'))
-	.pipe(sourcemaps.write('.'))
-	.pipe(gulp.dest(source.app.js))
-	.pipe(browserSync.stream());
+function js() {
+    const entry = 'scripts.js';
+    const jsFolder = './src/libs/';
+    return browserify({
+        entries: [jsFolder + entry]
+    })
+    .transform(babelify, {presets: ['@babel/preset-env']})
+    .bundle()
+    .pipe(vss(entry))
+    .pipe(rename({extname: '.min.js'}))
+    .pipe(vbuffer())
+    .pipe(gulp.dest('./src/js'))
 }
-gulp.task('jsfiles', jsfiles);
+gulp.task('js', js);
 
-// Отслеживаем изменения в файлах.
-
+// Watch files
 function watch() {
 	browserSync.init({
 		server: {
@@ -108,17 +120,17 @@ function watch() {
 		tunnel: false
 	});
 	gulp.watch(source.watch.css);
-	gulp.watch(source.watch.sass, sassproc);
-	gulp.watch(source.watch.js, jsfiles);
+	gulp.watch(source.watch.sass, styles);
+	gulp.watch(source.watch.js, js);
 	gulp.watch(source.watch.php);
-	gulp.watch(source.watch.pug, pugproc);
-	gulp.watch(source.watch.nunchacks, nunja).on('change', browserSync.reload);
+	gulp.watch(source.watch.pug, pugs);
+	gulp.watch(source.watch.nunchucks, nunjucksTmpl).on('change', browserSync.reload);
 	gulp.watch(source.watch.html).on('change', browserSync.reload);
 	gulp.watch('./smartgrid.js', grid).on('change', browserSync.reload);
 }
 gulp.task('watch', watch);
 
-// Генерация препроцессорной-сетки SmartGrid
+// SmartGrid preprocessor generation
 function grid(done) {
 	delete require.cache[require.resolve('./smartgrid.js')];
 	let gridOptions = require('./smartgrid.js');
@@ -127,48 +139,43 @@ function grid(done) {
 }
 gulp.task('grid', grid);
 
-// TASK FOR BUILD (PRODUCTION) - Сборка для продакшена
+// TASKS FOR BUILD (PRODUCTION)
 
-// Собрать все HTML файлы.
-function html() {
-	return gulp.src(source.app.html)
-	.pipe(gulp.dest(source.build.html));
+// Collect all html
+function htmlBuild() {
+	return gulp.src(source.src.html)
+	.pipe(gulp.dest(source.dist.html));
 }
-// Собрать все стили.
-function styles() {
-	return gulp.src(source.app.css + '*.+(css|map)')
+// Collect all styles
+function stylesBuild() {
+	return gulp.src(source.src.css + '*.+(css|map)')
+    .pipe(sourcemaps.init({loadMaps: true}))
 	.pipe(cleanCSS({
 		level: 2
 	}))
-	.pipe(gulp.dest(source.build.css));
+    .pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest(source.dist.css));
 }
-// Собрать все скрипты.
-function scripts() {
-	return gulp.src(source.app.js + '*.js')
-	.pipe(babel({
-		presets: ['@babel/preset-env']
-	}))
-	.on('error', console.error.bind(console))
+// Collect all scripts
+function scriptsBuild() {
+	return gulp.src(source.src.js)
+    .pipe(sourcemaps.init({loadMaps: true}))
 	.pipe(uglify({
 		toplevel: true
 	}))
-	.pipe(gulp.dest(source.build.js));
+    .pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest(source.dist.js));
 }
 
-function mapjs() {
-	return gulp.src(source.app.js + '*.map')
-	.pipe(gulp.dest(source.build.js));
+// Collect all fonts
+function fontsBuild() {
+	return gulp.src(source.src.fonts)
+	.pipe(gulp.dest(source.dist.fonts));
 }
 
-// Собрать все шрифты.
-function fonts() {
-	return gulp.src(source.app.fonts)
-	.pipe(gulp.dest(source.build.fonts));
-}
-
-// Оptimize images - Оптимизация изображений перед отправкой в продакшн
-function optimg() {
-	return gulp.src(source.app.img)
+// Оptimize images
+function optimgBuild() {
+	return gulp.src(source.src.img)
 	.pipe(imagemin([
 		imagemin.gifsicle({interlaced: true}),
 		imagemin.mozjpeg({quality: 75, progressive: true}),
@@ -184,13 +191,13 @@ function optimg() {
 	],{
 		verbose: true
 	}))
-	.pipe(gulp.dest(source.build.img));
+	.pipe(gulp.dest(source.dist.img));
 }
-gulp.task('optimg', optimg);
+gulp.task('optimgBuild', optimgBuild);
 
-// Uploading files via FTP - Отправка файлов на хостинг
+// Uploading files via FTP
 function serverFTP() {
-	return gulp.src('./build/**')
+	return gulp.src('./dist/**')
 	.pipe(ftp({
 		host: 'ftp',
 		user: 'user',
@@ -201,16 +208,16 @@ function serverFTP() {
 }
 gulp.task('serverFTP', serverFTP);
 
-// Очистить папку продакшена перед сборкой.
+// Clear production folder before building
 function clean() {
-	return del(['build/*']);
+	return del(['dist/*']);
 }
 gulp.task('clean', clean);
 
-// Run the build - Запустить сборку
-gulp.task('build', gulp.series(clean, optimg, gulp.parallel(html, styles, scripts, mapjs, fonts)));
+// Run the build
+gulp.task('dev', gulp.series(clean, optimgBuild, gulp.parallel(htmlBuild, stylesBuild, scriptsBuild, fontsBuild)));
 
-gulp.task('dev', gulp.series('build'));
+gulp.task('build', gulp.series('dev'));
 
-// Дефолтная команда
+// Default cmd
 gulp.task('default', gulp.series(watch));

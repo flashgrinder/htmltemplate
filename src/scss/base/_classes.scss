@@ -64,7 +64,7 @@
 /* Title */
 
 .title {
-    font-family: var(--font-second);
+    font-family: var(--font-gotham);
     font-style: normal;
     margin: 0;
     &_big {
@@ -97,7 +97,7 @@
 }
 
 .title-second {
-    font-family: var(--font-main);
+    font-family: var(--font-roboto);
     font-style: normal;
     font-weight: 900;
     font-size: 18px;
@@ -109,7 +109,7 @@
 /* Text */
 
 .text {
-    font-family: var(--font-main);
+    font-family: var(--font-roboto);
     font-style: normal;
     margin: 0;
 	&_dark {
