@@ -1,0 +1,496 @@
+$columns: 12;
+$atom: (100% / $columns);
+
+$break_medium: 1200px;
+$break_tablet: 1024px;
+$break_mobile: 767px;
+$break_mobileXL: 567px;
+$break_mobileXS: 400px;
+
+$offset: 30px;
+$offset_medium: $offset;
+$offset_tablet: $offset;
+$offset_mobile: 15px;
+$offset_mobileXL: $offset_mobile;
+$offset_mobileXS: $offset_mobile;
+
+$offset_one_side: ($offset / 2);
+$offset_medium_one_side: ($offset_medium / 2);
+$offset_tablet_one_side: ($offset_tablet / 2);
+$offset_mobile_one_side: ($offset_mobile / 2);
+$offset_mobileXL_one_side: ($offset_mobileXL / 2);
+$offset_mobileXS_one_side: ($offset_mobileXS / 2);
+
+$fields: 30px;
+$fields_mobile: 15px;
+
+@mixin wrapper-full(){
+    padding-left: $fields;
+    padding-right: $fields;
+
+    @include mobile-block(){
+        padding-left: $fields_mobile;
+        padding-right: $fields_mobile;
+    }
+}
+
+@mixin row-offsets(){
+    margin-left: ($offset_one_side * -1);
+    margin-right: ($offset_one_side * -1);
+
+    @include mobile-block(){
+        margin-left: ($offset_mobile_one_side * -1);
+        margin-right: ($offset_mobile_one_side * -1);
+    }
+}
+
+@mixin col-offsets($type){
+    #{$type}-left: $offset_one_side;
+    #{$type}-right: $offset_one_side;
+
+    @include mobile-block(){
+        #{$type}-left: $offset_mobile_one_side;
+        #{$type}-right: $offset_mobile_one_side;
+    }
+}
+
+@mixin wrapper(){
+    max-width: 1920px;
+    margin: 0 auto;
+    @include wrapper-full();
+}
+
+@mixin row-flex(){
+    display: flex;
+    flex-wrap: wrap;
+    @include row-offsets();
+}
+
+@mixin row-float(){
+    @include row-offsets();
+    @include clearfix();
+}
+
+@mixin row-ib(){
+    @include row-offsets();
+}
+
+@mixin col(){
+    box-sizing: border-box;
+    word-wrap: break-word;
+    @include col-offsets(margin);
+}
+
+@mixin col-float(){
+    float: left;
+}
+
+@mixin col-ib(){
+    display: inline-block;
+    vertical-align: top;
+}
+
+@mixin col-padding(){
+    word-wrap: break-word;
+    @include col-offsets(padding);
+}
+
+@mixin size($n){
+    $val: 100% / $columns * $n;
+    width: #{calc(#{$val} - #{$offset})};
+}
+
+@mixin size-medium($n){
+    $val: 100% / $columns * $n;
+    @include medium(width, #{calc(#{$val} - #{$offset_medium})});
+}
+
+@mixin size-tablet($n){
+    $val: 100% / $columns * $n;
+    @include tablet(width, #{calc(#{$val} - #{$offset_tablet})});
+}
+
+@mixin size-mobile($n){
+    $val: 100% / $columns * $n;
+    @include mobile(width, #{calc(#{$val} - #{$offset_mobile})});
+}
+
+@mixin size-mobileXL($n){
+    $val: 100% / $columns * $n;
+    @include mobileXL(width, #{calc(#{$val} - #{$offset_mobileXL})});
+}
+
+@mixin size-mobileXS($n){
+    $val: 100% / $columns * $n;
+    @include mobileXS(width, #{calc(#{$val} - #{$offset_mobileXS})});
+}
+
+@mixin shift($n){
+    $val: 100% / $columns * $n;
+    margin-left: #{calc(#{$val} + #{$offset_one_side})};
+    margin-right: #{calc(#{$val} + #{$offset_one_side})};
+}
+
+@mixin shift-left($n){
+    $val: 100% / $columns * $n;
+    margin-left: #{calc(#{$val} + #{$offset_one_side})};
+}
+
+@mixin shift-right($n){
+    $val: 100% / $columns * $n;
+    margin-right: #{calc(#{$val} + #{$offset_one_side})};
+}
+
+@mixin shift-padding($n){
+    $val: 100% / $columns * $n;
+    padding-left: #{calc(#{$val} + #{$offset_one_side})};
+    padding-right: #{calc(#{$val} + #{$offset_one_side})};
+}
+
+@mixin shift-padding-left($n){
+    $val: 100% / $columns * $n;
+    padding-left: #{calc(#{$val} + #{$offset_one_side})};
+}
+
+@mixin shift-padding-right($n){
+    $val: 100% / $columns * $n;
+    padding-right: #{calc(#{$val} + #{$offset_one_side})};
+}
+
+@mixin shift-medium($n){
+    $val: 100% / $columns * $n;
+    @include medium(margin-left, #{calc(#{$val} + #{$offset_medium_one_side})});
+    @include medium(margin-right, #{calc(#{$val} + #{$offset_medium_one_side})});
+}
+
+@mixin shift-medium-left($n){
+    $val: 100% / $columns * $n;
+    @include medium(margin-left, #{calc(#{$val} + #{$offset_medium_one_side})});
+}
+
+@mixin shift-medium-right($n){
+    $val: 100% / $columns * $n;
+    @include medium(margin-right, #{calc(#{$val} + #{$offset_medium_one_side})});
+}
+
+@mixin shift-medium-padding($n){
+    $val: 100% / $columns * $n;
+    @include medium(padding-left, #{calc(#{$val} + #{$offset_medium_one_side})});
+    @include medium(padding-right, #{calc(#{$val} + #{$offset_medium_one_side})});
+}
+
+@mixin shift-medium-padding-left($n){
+    $val: 100% / $columns * $n;
+    @include medium(padding-left, #{calc(#{$val} + #{$offset_medium_one_side})});
+}
+
+@mixin shift-medium-padding-right($n){
+    $val: 100% / $columns * $n;
+    @include medium(padding-right, #{calc(#{$val} + #{$offset_medium_one_side})});
+}
+
+@mixin shift-tablet($n){
+    $val: 100% / $columns * $n;
+    @include tablet(margin-left, #{calc(#{$val} + #{$offset_tablet_one_side})});
+    @include tablet(margin-right, #{calc(#{$val} + #{$offset_tablet_one_side})});
+}
+
+@mixin shift-tablet-left($n){
+    $val: 100% / $columns * $n;
+    @include tablet(margin-left, #{calc(#{$val} + #{$offset_tablet_one_side})});
+}
+
+@mixin shift-tablet-right($n){
+    $val: 100% / $columns * $n;
+    @include tablet(margin-right, #{calc(#{$val} + #{$offset_tablet_one_side})});
+}
+
+@mixin shift-tablet-padding($n){
+    $val: 100% / $columns * $n;
+    @include tablet(padding-left, #{calc(#{$val} + #{$offset_tablet_one_side})});
+    @include tablet(padding-right, #{calc(#{$val} + #{$offset_tablet_one_side})});
+}
+
+@mixin shift-tablet-padding-left($n){
+    $val: 100% / $columns * $n;
+    @include tablet(padding-left, #{calc(#{$val} + #{$offset_tablet_one_side})});
+}
+
+@mixin shift-tablet-padding-right($n){
+    $val: 100% / $columns * $n;
+    @include tablet(padding-right, #{calc(#{$val} + #{$offset_tablet_one_side})});
+}
+
+@mixin shift-mobile($n){
+    $val: 100% / $columns * $n;
+    @include mobile(margin-left, #{calc(#{$val} + #{$offset_mobile_one_side})});
+    @include mobile(margin-right, #{calc(#{$val} + #{$offset_mobile_one_side})});
+}
+
+@mixin shift-mobile-left($n){
+    $val: 100% / $columns * $n;
+    @include mobile(margin-left, #{calc(#{$val} + #{$offset_mobile_one_side})});
+}
+
+@mixin shift-mobile-right($n){
+    $val: 100% / $columns * $n;
+    @include mobile(margin-right, #{calc(#{$val} + #{$offset_mobile_one_side})});
+}
+
+@mixin shift-mobile-padding($n){
+    $val: 100% / $columns * $n;
+    @include mobile(padding-left, #{calc(#{$val} + #{$offset_mobile_one_side})});
+    @include mobile(padding-right, #{calc(#{$val} + #{$offset_mobile_one_side})});
+}
+
+@mixin shift-mobile-padding-left($n){
+    $val: 100% / $columns * $n;
+    @include mobile(padding-left, #{calc(#{$val} + #{$offset_mobile_one_side})});
+}
+
+@mixin shift-mobile-padding-right($n){
+    $val: 100% / $columns * $n;
+    @include mobile(padding-right, #{calc(#{$val} + #{$offset_mobile_one_side})});
+}
+
+@mixin shift-mobileXL($n){
+    $val: 100% / $columns * $n;
+    @include mobileXL(margin-left, #{calc(#{$val} + #{$offset_mobileXL_one_side})});
+    @include mobileXL(margin-right, #{calc(#{$val} + #{$offset_mobileXL_one_side})});
+}
+
+@mixin shift-mobileXL-left($n){
+    $val: 100% / $columns * $n;
+    @include mobileXL(margin-left, #{calc(#{$val} + #{$offset_mobileXL_one_side})});
+}
+
+@mixin shift-mobileXL-right($n){
+    $val: 100% / $columns * $n;
+    @include mobileXL(margin-right, #{calc(#{$val} + #{$offset_mobileXL_one_side})});
+}
+
+@mixin shift-mobileXL-padding($n){
+    $val: 100% / $columns * $n;
+    @include mobileXL(padding-left, #{calc(#{$val} + #{$offset_mobileXL_one_side})});
+    @include mobileXL(padding-right, #{calc(#{$val} + #{$offset_mobileXL_one_side})});
+}
+
+@mixin shift-mobileXL-padding-left($n){
+    $val: 100% / $columns * $n;
+    @include mobileXL(padding-left, #{calc(#{$val} + #{$offset_mobileXL_one_side})});
+}
+
+@mixin shift-mobileXL-padding-right($n){
+    $val: 100% / $columns * $n;
+    @include mobileXL(padding-right, #{calc(#{$val} + #{$offset_mobileXL_one_side})});
+}
+
+@mixin shift-mobileXS($n){
+    $val: 100% / $columns * $n;
+    @include mobileXS(margin-left, #{calc(#{$val} + #{$offset_mobileXS_one_side})});
+    @include mobileXS(margin-right, #{calc(#{$val} + #{$offset_mobileXS_one_side})});
+}
+
+@mixin shift-mobileXS-left($n){
+    $val: 100% / $columns * $n;
+    @include mobileXS(margin-left, #{calc(#{$val} + #{$offset_mobileXS_one_side})});
+}
+
+@mixin shift-mobileXS-right($n){
+    $val: 100% / $columns * $n;
+    @include mobileXS(margin-right, #{calc(#{$val} + #{$offset_mobileXS_one_side})});
+}
+
+@mixin shift-mobileXS-padding($n){
+    $val: 100% / $columns * $n;
+    @include mobileXS(padding-left, #{calc(#{$val} + #{$offset_mobileXS_one_side})});
+    @include mobileXS(padding-right, #{calc(#{$val} + #{$offset_mobileXS_one_side})});
+}
+
+@mixin shift-mobileXS-padding-left($n){
+    $val: 100% / $columns * $n;
+    @include mobileXS(padding-left, #{calc(#{$val} + #{$offset_mobileXS_one_side})});
+}
+
+@mixin shift-mobileXS-padding-right($n){
+    $val: 100% / $columns * $n;
+    @include mobileXS(padding-right, #{calc(#{$val} + #{$offset_mobileXS_one_side})});
+}
+
+@mixin medium($name, $value){
+    @media screen and (max-width: $break_medium){
+        #{$name}: $value;
+    }
+}
+
+@mixin medium-block(){
+    @media screen and (max-width: $break_medium){
+        @content;
+    }
+}
+
+@mixin tablet($name, $value){
+    @media screen and (max-width: $break_tablet){
+        #{$name}: $value;
+    }
+}
+
+@mixin tablet-block(){
+    @media screen and (max-width: $break_tablet){
+        @content;
+    }
+}
+
+@mixin mobile($name, $value){
+    @media screen and (max-width: $break_mobile){
+        #{$name}: $value;
+    }
+}
+
+@mixin mobile-block(){
+    @media screen and (max-width: $break_mobile){
+        @content;
+    }
+}
+
+@mixin mobileXL($name, $value){
+    @media screen and (max-width: $break_mobileXL){
+        #{$name}: $value;
+    }
+}
+
+@mixin mobileXL-block(){
+    @media screen and (max-width: $break_mobileXL){
+        @content;
+    }
+}
+
+@mixin mobileXS($name, $value){
+    @media screen and (max-width: $break_mobileXS){
+        #{$name}: $value;
+    }
+}
+
+@mixin mobileXS-block(){
+    @media screen and (max-width: $break_mobileXS){
+        @content;
+    }
+}
+
+@mixin from($min_width){
+    @media screen and (min-width: $min_width){
+        @content;
+    }
+}
+
+@mixin to($max_width){
+    @media screen and (max-width: $max_width){
+        @content;
+    }
+}
+
+@mixin from-to($min_width, $max_width){
+    @media screen and (min-width: $min_width) and (max-width: $max_width){
+        @content;
+    }
+}
+
+@mixin u-row-flex($offset){
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: ($offset / -2);
+    margin-right: ($offset / -2);
+}
+
+@mixin u-col($offset){
+    box-sizing: border-box;
+    word-wrap: break-word;
+    margin-left: ($offset / 2);
+    margin-right: ($offset / 2);
+}
+
+@mixin u-size($n, $columns, $offset){
+    width: #{calc(100% / #{$columns} * #{$n} - #{$offset})};
+}
+
+@mixin reset(){
+    body,div,dl,dt,dd,ul,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,input,textarea,p,blockquote,th,td{
+        margin: 0;
+        padding: 0;
+    }
+    table{
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    fieldset,img,abbr{
+        border: 0;
+    }
+    address,caption,cite,code,dfn,em,strong,th,var{
+        font-style: normal;
+        font-weight: normal;
+    }
+    ul li{
+        list-style: none;
+    }
+    caption,th{
+        text-align: left;
+    }
+    h1,h2,h3,h4,h5,h6{
+        font-size: 100%;
+        font-weight: normal;
+    }
+    sup{
+        vertical-align: text-top;
+    }
+    sub{
+        vertical-align: text-bottom;
+    }
+    input,textarea,select{
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+    }
+    legend{
+        color: #000;
+    }
+    article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section,main{
+        display: block;
+    }
+    img{
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+@mixin debug($background, $outline){
+    height: 100vh;
+    position: fixed;
+    width: 100%;
+    
+    > div{
+        height: inherit;
+        @include wrapper();
+        
+        > div{
+            height: inherit;
+            @include row-flex();
+            
+            > div{
+                @include col();
+                @include size(1);
+                @include size-mobile(1);
+                height: inherit;
+                outline: $outline;
+                background: $background;
+            }
+        }
+    }
+}
+
+@mixin clearfix(){
+    &::after{
+        display: block;
+        content: "";
+        clear: both;
+    }
+}
