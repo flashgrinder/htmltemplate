@@ -41,11 +41,11 @@ const source = {
 		libs: './src/libs/scripts.js'
 	},
 	dist: {
-		html:  './dist',
-		css:   './dist/css',
-		fonts: './dist/fonts',
-		img:   './dist/img',
-		js:    './dist/js'
+		html:  './assets',
+		css:   './assets/css',
+		fonts: './assets/fonts',
+		img:   './assets/img',
+		js:    './assets/js'
 	},
 	watch: {
 		pug: './src/**/*.+(jade|pug)',
@@ -197,7 +197,7 @@ gulp.task('optimgBuild', optimgBuild);
 
 // Uploading files via FTP
 function serverFTP() {
-	return gulp.src('./dist/**')
+	return gulp.src('./assets/**')
 	.pipe(ftp({
 		host: 'ftp',
 		user: 'user',
@@ -210,7 +210,7 @@ gulp.task('serverFTP', serverFTP);
 
 // Clear production folder before building
 function clean() {
-	return del(['dist/*']);
+	return del(['assets/*']);
 }
 gulp.task('clean', clean);
 
