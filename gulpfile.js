@@ -5,7 +5,7 @@ let gulp          = require('gulp'),
 	cleanCSS      = require('gulp-clean-css'),
 	browserSync   = require('browser-sync').create(),
 	sourcemaps    = require('gulp-sourcemaps'),
-	sass          = require('gulp-sass'),
+	sass          = require('gulp-sass')(require('sass')),
 	gcmq          = require('gulp-group-css-media-queries'),
 	uglify        = require('gulp-uglify'),
 	smartgrid     = require('smart-grid'),
@@ -101,7 +101,7 @@ function js() {
     return browserify({
         entries: [jsFolder + entry]
     })
-    .transform(babelify, {presets: ['@babel/preset-env']})
+    .transform(babelify, {presets: ['@babel/preset-env'], global: true})
     .bundle()
     .pipe(vss(entry))
     .pipe(rename({extname: '.min.js'}))
