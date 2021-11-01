@@ -6,6 +6,11 @@ html {
     scroll-behavior: smooth;
 }
 
+html,
+body {
+    height: 100%;
+}
+
 img {
     max-width: 100%;
 }
