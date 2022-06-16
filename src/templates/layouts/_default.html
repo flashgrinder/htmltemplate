@@ -7,8 +7,19 @@
         <meta name="robots" content="index, follow"/>
         <meta name="theme-color" content="#000"/>
         <meta name="apple-mobile-web-app-status-bar-style" content="#000"/>
-        <title>Главная</title>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+        <title>{{ title }}</title>
         <link rel="stylesheet" href="css/style.min.css"/>
     </head>
-<body class="page bg--gray">
+<body class="page bg--white">
+
+    {% include "partials/_grid.html" %}
+    {% include "partials/_header.html" %}
+    
+    <!-- MAIN -->
+    <main class="main page__container">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <!-- /. MAIN -->
+    
+    {% include "partials/_footer.html" %}

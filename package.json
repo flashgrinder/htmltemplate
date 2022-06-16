@@ -49,7 +49,6 @@
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
-    "instafeed.js": "^2.0.0-rc3",
     "postcss-responsive-type": "^1.0.0",
     "smooth-scrollbar": "^8.6.3",
     "swiper": "^6.8.2"

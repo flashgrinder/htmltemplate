@@ -2,9 +2,9 @@ module.exports = {
 	filename: "_smart-grid",
 	outputStyle: 'scss',
 	columns: 12,
-	offset: "30px",
+	offset: "20px",
 	container: {
-		maxWidth: "1260px",
+		maxWidth: "1200px",
 		fields: "30px"
 	},
 	breakPoints: {
